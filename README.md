@@ -1,5 +1,5 @@
 # strfry Personal Relay Write Policy
-This is python code for a write policy plugin for the [strfry](https://github.com/hoytech/strfry) nostr relay that implements part of a personal relay solution. I'm working on an entire docker-based set of cofigs to make deploying a personal relay a 5-minute setup on a plain VPS. But until I've worked out all the kinks with that, I'm making just the write policy plugin available in case it has value.
+This is python code for a [write policy plugin](https://github.com/hoytech/strfry/blob/master/docs/plugins.md) for the [strfry](https://github.com/hoytech/strfry) nostr relay that implements part of a personal relay solution. I'm working on an entire docker-based set of configs to make deploying a personal relay a 5-minute setup on a plain VPS. But until I've worked out all the kinks with that, I'm making just the write policy plugin available in case it has value.
 
 ## Motivation
 I think that in order for nostr to be what it can be, there needs to be a LOT of small relays all over everywhere as opposed to a short list of giant, "popular" relays that everyone uses which then must inevitably become centralized points of all manner of vulnerabilities that nostr is explicitly about avoiding.
