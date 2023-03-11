@@ -49,6 +49,7 @@ def main():
     try:
       if not request['event']['id']:
         eprint("input without event id in write policy plugin")
+        continue
     except KeyError:
       eprint("input without event id in write policy plugin")
       continue
@@ -56,8 +57,10 @@ def main():
     try:
       if request['event']['pubkey'] in whitelist:
         accept(request)
+        continue
       elif int(request['event']['kind']) == 10002:
         accept(request)
+        continue
       elif request.get("event", {}).get("tags"):
         if p_tags:= [x for x in request['event']['tags'] if x[0] == 'p']:
           pubkeys = [x[1] for x in p_tags]
