@@ -10,7 +10,7 @@ whitelist = {
 }
 
 def eprint(*args, **kwargs):
-  print(*args, file=sys.stderr, **kwargs)
+  print(*args, **kwargs, file=sys.stderr, flush=True)
 
 def accept(request):
   response = {
@@ -27,7 +27,7 @@ def reject(request):
   }
 
   response['action'] = 'reject'
-  response['msg'] = f"blocked: pubkey {request['event']['pubkey']} not in whitelist. | SOURCE: {request['sourceInfo']}"
+  response['msg'] = f"blocked: pubkey {request['event']['pubkey']} not in whitelist | SOURCE: {request['sourceInfo']}"
   r = json.dumps(response,separators=(',', ':')) # output JSONL
   print(r, end='\n', file=sys.stdout, flush=True)
 
@@ -37,22 +37,21 @@ def main():
 
     try:
       if request['type'] == 'lookback':
-        sys.exit(0)
+        continue
     except KeyError:
       eprint("input without type in write policy plugin")
-      sys.exit(0)
+      continue
 
     if request['type'] != 'new':
       eprint("unexpected request type in write policy plugin")
-      sys.exit(0)
+      continue
 
     try:
       if not request['event']['id']:
         eprint("input without event id in write policy plugin")
-        sys.exit(0)
     except KeyError:
       eprint("input without event id in write policy plugin")
-      sys.exit(0)
+      continue
 
     try:
       if request['event']['pubkey'] in whitelist:
@@ -64,15 +63,15 @@ def main():
           pubkeys = [x[1] for x in p_tags]
           if whitelist.intersection(pubkeys):
             accept(request)
-          else:
-            reject(request)
-        else:
-          reject(request)
+            continue
+        reject(request)
+        continue
       else:
         reject(request)
+        continue
     except KeyError:
       eprint("poorly formed event input in write policy plugin")
-      sys.exit(0)
+      continue
 
 if __name__=='__main__':
   main()
